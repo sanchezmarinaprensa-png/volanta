@@ -1,0 +1,9 @@
+// Configuración para Cloudflare: publica la carpeta dist que genera "npm run build".
+{
+  "name": "volanta",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

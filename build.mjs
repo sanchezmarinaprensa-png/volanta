@@ -257,7 +257,7 @@ write('nosotros.html', layout({ prefix: '', title: 'Quiénes somos', canon: 'nos
 <p><strong>Contacto:</strong> ${esc(sitio.email)}</p>${sitio.cafecito ? `<p><a class="btn" href="https://cafecito.app/${esc(sitio.cafecito)}" target="_blank" rel="noopener">Invitanos un cafecito</a></p>` : ''}</div></article>` }));
 
 // 404
-write('404.html', layout({ prefix: '/', title: 'Página no encontrada', canon: '404.html', body: `<section class="wrap vacio"><p class="eyebrow">Error 404</p><h1>Esta página no existe.</h1><p><a class="btn" href="/">Volver a la portada</a></p></section>` }));
+write('404.html', layout({ prefix: BASE + '/', title: 'Página no encontrada', canon: '404.html', body: `<section class="wrap vacio"><p class="eyebrow">Error 404</p><h1>Esta página no existe.</h1><p><a class="btn" href="${BASE}/">Volver a la portada</a></p></section>` }));
 
 // Índice para el buscador, RSS y sitemap
 write('noticias.json', JSON.stringify(notas.map((n) => ({ t: n.titulo, b: n.bajada, s: n.sec.slug, sn: n.sec.nombre, u: `nota/${n.slug}.html`, f: n.fecha.toISOString(), m: n.minutos, i: n.imagen || '' }))));

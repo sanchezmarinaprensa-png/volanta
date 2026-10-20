@@ -9,8 +9,8 @@ backend:
     delete: "Nota borrada: {{slug}}"
     uploadMedia: "Foto: {{path}}"
 
-site_url: https://volanta.pages.dev
-display_url: https://volanta.pages.dev
+site_url: https://sanchezmarinaprensa-png.github.io/volanta
+display_url: https://sanchezmarinaprensa-png.github.io/volanta
 media_folder: static/uploads
 public_folder: /uploads
 slug:

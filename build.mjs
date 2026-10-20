@@ -50,7 +50,7 @@ function copyDir(src, dst) {
 
 // ---------- notas ----------
 const dir = path.join(ROOT, 'content/noticias');
-const notas = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => {
+const notas = (fs.existsSync(dir) ? fs.readdirSync(dir) : []).filter((f) => f.endsWith('.json')).map((f) => {
   const n = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
   const texto = (n.cuerpo || '').replace(/[#>*_\-\[\]()`]/g, ' ');
   return {

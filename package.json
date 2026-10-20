@@ -1,0 +1,12 @@
+{
+  "name": "volanta",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && npx --yes serve@14.2.4 dist"
+  },
+  "dependencies": {
+    "marked": "18.0.14"
+  }
+}

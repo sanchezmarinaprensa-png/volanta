@@ -1,0 +1,90 @@
+# Panel de redacción de Volanta (Sveltia CMS)
+# Reemplazá TU-USUARIO por tu usuario de GitHub.
+backend:
+  name: github
+  repo: TU-USUARIO/volanta
+  branch: main
+  commit_messages:
+    create: "Nueva nota: {{slug}}"
+    update: "Edición: {{slug}}"
+    delete: "Nota borrada: {{slug}}"
+    uploadMedia: "Foto: {{path}}"
+
+site_url: https://volanta.pages.dev
+display_url: https://volanta.pages.dev
+media_folder: static/uploads
+public_folder: /uploads
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: noticias
+    label: Notas
+    label_singular: Nota
+    description: Todo lo que se publica en el sitio. Al guardar, la nota aparece en la web en 1 o 2 minutos.
+    folder: content/noticias
+    extension: json
+    format: json
+    create: true
+    slug: "{{titulo}}"
+    identifier_field: titulo
+    summary: "{{fecha | date('DD/MM')}} · {{seccion}} · {{titulo}}"
+    sortable_fields: [fecha, titulo, seccion]
+    view_groups:
+      - label: Sección
+        field: seccion
+    fields:
+      - { name: volanta, label: Volanta, widget: string, required: false, hint: "Dos o tres palabras arriba del título. Ej: Bolsillo, Plan de finde, Exclusivo." }
+      - { name: titulo, label: Título, widget: string }
+      - { name: bajada, label: Bajada, widget: text, hint: "Una o dos oraciones que resumen la nota. Se usa también al compartir en redes." }
+      - name: seccion
+        label: Sección
+        widget: select
+        options:
+          - { label: Ciudad, value: ciudad }
+          - { label: Política, value: politica }
+          - { label: Economía, value: economia }
+          - { label: Cultura, value: cultura }
+          - { label: Norte, value: norte }
+          - { label: Deportes, value: deportes }
+      - { name: fecha, label: Fecha y hora, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { name: autor, label: Firma, widget: string, default: "Redacción Volanta" }
+      - { name: destacada, label: "¿Va como principal en la portada?", widget: boolean, default: false, hint: "Si marcás varias, se muestra la más nueva." }
+      - { name: imagen, label: Foto principal, widget: image, required: false, hint: "Horizontal. Si no subís foto, el sitio genera una portada con el color de la sección." }
+      - { name: epigrafe, label: Epígrafe de la foto, widget: string, required: false }
+      - { name: cuerpo, label: Texto de la nota, widget: markdown, hint: "Podés poner subtítulos, negritas, listas, citas, fotos y links." }
+      - { name: borrador, label: "Guardar como borrador (no se publica)", widget: boolean, default: false, required: false }
+
+  - name: configuracion
+    label: Configuración del sitio
+    files:
+      - name: sitio
+        label: Datos del medio, redes y publicidad
+        file: content/sitio.json
+        format: json
+        fields:
+          - { name: nombre, label: Nombre del medio, widget: string }
+          - { name: lema, label: Lema, widget: string }
+          - { name: descripcion, label: Descripción corta, widget: text }
+          - { name: url, label: Dirección de la web, widget: string, hint: "Ej: https://volanta.com.ar" }
+          - { name: autora, label: Firma por defecto, widget: string }
+          - { name: email, label: Email de contacto, widget: string }
+          - { name: instagram, label: Usuario de Instagram, widget: string, required: false }
+          - { name: facebook, label: Página de Facebook, widget: string, required: false }
+          - { name: x, label: Usuario de X, widget: string, required: false }
+          - { name: tiktok, label: Usuario de TikTok, widget: string, required: false }
+          - { name: whatsapp_canal, label: Link al canal de WhatsApp, widget: string, required: false }
+          - { name: cafecito, label: Usuario de Cafecito, widget: string, required: false, hint: "Creá tu cuenta gratis en cafecito.app y poné acá tu usuario." }
+          - { name: adsense_cliente, label: ID de Google AdSense, widget: string, required: false, hint: "Ej: ca-pub-1234567890. Dejalo vacío hasta que Google te apruebe." }
+          - name: avisos
+            label: Anunciantes
+            label_singular: Aviso
+            widget: list
+            required: false
+            hint: "Banners horizontales (ideal 1200 x 200 px). Mientras no haya, se muestra un espacio que invita a anunciar."
+            fields:
+              - { name: nombre, label: Anunciante, widget: string }
+              - { name: imagen, label: Banner, widget: image }
+              - { name: link, label: Link al hacer clic, widget: string, required: false }
+          - { name: sobre, label: Texto de "Quiénes somos", widget: markdown }

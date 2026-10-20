@@ -30,6 +30,14 @@ function hace(d) {
   if (min < 60 * 24) return `hace ${Math.round(min / 60)} h`;
   return new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short', timeZone: 'America/Argentina/Salta' }).format(d);
 }
+// hora si es de hoy; si no, "ayer" o la fecha corta
+const dia = (d) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Argentina/Salta' }).format(d);
+function cuando(d) {
+  const hoy = new Date();
+  if (dia(d) === dia(hoy)) return fmtHora(d);
+  if (dia(d) === dia(new Date(hoy - 864e5))) return 'Ayer';
+  return new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short', timeZone: 'America/Argentina/Salta' }).format(d);
+}
 // rutas relativas, para que el sitio funcione en cualquier hosting
 const rel = (prefix, p) => (p.startsWith('http') ? p : prefix + p.replace(/^\//, ''));
 const abs = (p) => (p.startsWith('http') ? p : `${BASE}/${p.replace(/^\//, '')}`);
@@ -168,7 +176,9 @@ copyDir(path.join(ROOT, 'admin'), path.join(OUT, 'admin'));
   const principal = notas.find((n) => n.destacada) || notas[0];
   const resto = notas.filter((n) => n !== principal);
   const ultimas = resto.slice(0, 5);
-  const porSeccion = SECCIONES.map((s) => ({ s, items: notas.filter((n) => n.sec.slug === s.slug).slice(0, 3) })).filter((x) => x.items.length);
+  // las notas que ya están arriba no se repiten en los bloques de sección
+  const yaVistas = new Set([principal, ...resto.slice(0, 3)]);
+  const porSeccion = SECCIONES.map((s) => ({ s, items: notas.filter((n) => n.sec.slug === s.slug && !yaVistas.has(n)).slice(0, 3) })).filter((x) => x.items.length);
   const hoy = new Intl.DateTimeFormat('es-AR', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'America/Argentina/Salta' }).format(new Date());
   const body = !principal ? `<section class="vacio"><h1>Todavía no hay notas</h1><p>Entrá a <a href="admin/">/admin</a> y publicá la primera.</p></section>` : `
 <section class="hero wrap">
@@ -182,7 +192,7 @@ copyDir(path.join(ROOT, 'admin'), path.join(OUT, 'admin'));
   </article>
   <aside class="ultimas" aria-labelledby="ult">
     <h2 id="ult"><span class="pulso" aria-hidden="true"></span>Lo último <small>${esc(hoy)}</small></h2>
-    <ol>${ultimas.map((n) => `<li><time datetime="${n.fecha.toISOString()}">${fmtHora(n.fecha)}</time><div><a href="nota/${n.slug}.html">${esc(n.titulo)}</a><span class="chip" data-sec="${n.sec.slug}">${n.sec.nombre}</span></div></li>`).join('')}</ol>
+    <ol>${ultimas.map((n) => `<li><time datetime="${n.fecha.toISOString()}">${cuando(n.fecha)}</time><div><a href="nota/${n.slug}.html">${esc(n.titulo)}</a><span class="chip" data-sec="${n.sec.slug}">${n.sec.nombre}</span></div></li>`).join('')}</ol>
   </aside>
 </section>
 <section class="wrap grilla">${resto.slice(0, 3).map((n) => card(n, p, 'con-bajada')).join('')}</section>

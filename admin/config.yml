@@ -29,7 +29,11 @@ collections:
     slug: "{{titulo}}"
     identifier_field: titulo
     summary: "{{fecha | date('DD/MM')}} · {{seccion}} · {{titulo}}"
-    sortable_fields: [fecha, titulo, seccion]
+    sortable_fields:
+      fields: [fecha, titulo, seccion]
+      default:
+        field: fecha
+        direction: descending
     view_groups:
       - label: Sección
         field: seccion

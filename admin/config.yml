@@ -1,8 +1,7 @@
 # Panel de redacción de Volanta (Sveltia CMS)
-# Reemplazá TU-USUARIO por tu usuario de GitHub.
 backend:
   name: github
-  repo: TU-USUARIO/volanta
+  repo: sanchezmarinaprensa-png/volanta
   branch: main
   commit_messages:
     create: "Nueva nota: {{slug}}"
